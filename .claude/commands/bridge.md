@@ -7,7 +7,8 @@ Run at the start of every Claude Code session.
 1. Read log.md — last 5 entries
 2. Read CLAUDE.md root
 3. Read Auto Memory (/memory)
-4. Skim index.md for context
+4. Read todo.md — open tasks and priorities
+5. Skim index.md for context
 
 ## Output format
 
@@ -17,6 +18,7 @@ Run at the start of every Claude Code session.
 **Last session:** [date + topic from log.md]
 **Stopped at:** [exact file and task]
 **Next action:** [specific first step — one line, actionable]
+**Active todos:** [from todo.md — top 3 unchecked items]
 **Active projects:** [from CLAUDE.md Active Priorities]
 **Files to open:** [specific files relevant to next action]
 **Open questions:** [anything unresolved from last session]

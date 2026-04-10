@@ -48,7 +48,9 @@ the next session can start executing immediately.]
 
 4. Add the new session file to index.md under ## Output > Sessions
 
-5. Confirm to the user: "Bridge written. See you next session."
+5. Review todo.md — check off any completed items, add new ones discovered during the session
+
+6. Confirm to the user: "Bridge written. See you next session."
 
 ## Rules
 

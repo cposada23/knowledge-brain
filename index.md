@@ -23,6 +23,7 @@ Read this first when looking for relevant content.
 | File | Summary |
 |---|---|
 | inbox/INBOX.md | Quick capture inbox — drop ideas here, processed with /ingest |
+| todo.md | Active tasks, priorities, and backlog — read by /bridge and /bridge-out |
 
 <!-- SECTION: Output -->
 ## Output
