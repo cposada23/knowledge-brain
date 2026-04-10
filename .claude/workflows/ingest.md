@@ -27,16 +27,21 @@ The project has multiple inboxes. Each one gives automatic context:
    - If no: move to `processed/` and note SKIPPED in the ingest report
    - If yes: continue
    - Course and project inboxes skip this filter — they are relevant by definition
-4. Write or update the relevant wiki page in /wiki
+4. Determine destination based on inbox location:
+   - `inbox/drop/` or `sources/courses/*/inbox/` → create page in `/wiki` (shared knowledge)
+   - `projects/[project]/inbox/` → create page in that project's folder
+     (use `references/`, `content/`, or `prompts/` based on content type)
+   - Project-specific content stays in the project — it is not general knowledge
+5. Write or update the page at the determined destination
    - One concept per page (atomic — not "everything about X")
    - Full frontmatter including distillation_level: 1
    - Add `course:` or `project:` field in frontmatter when applicable
    - Summary field: one sentence stating what and why it matters
    - Related links to connected existing pages
-5. Move the source file to the `processed/` subfolder in the same inbox
-6. Update index.md with any new pages created (Auto-index Rule — no exceptions)
-7. Append an entry to log.md: `## [DATE] ingest | [Page Title] (from [inbox location])`
-8. Update related existing pages if the new content connects to them
+6. Move the source file to the `processed/` subfolder in the same inbox
+7. Update index.md with any new pages created (Auto-index Rule — no exceptions)
+8. Append an entry to log.md: `## [DATE] ingest | [Page Title] (from [inbox location])`
+9. Update related existing pages if the new content connects to them
 
 ### For text entries (in INBOX.md)
 

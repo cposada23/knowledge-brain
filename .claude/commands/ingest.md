@@ -15,7 +15,10 @@ Scan and process all inbox locations across the project.
    - Read it completely
    - Determine context from inbox location (course/project auto-tagged)
    - Apply relevance filter (global inbox only — course/project inboxes skip it)
-   - If relevant: create atomic wiki page in appropriate /wiki subfolder
+   - Determine destination:
+     - Global or course inbox → wiki page in `/wiki`
+     - Project inbox → page in that project's folder (`references/`, `content/`, or `prompts/`)
+   - If relevant: create atomic page at the determined destination
      - Full frontmatter with distillation_level: 1
      - Add course: or project: field when applicable
      - One concept per page
