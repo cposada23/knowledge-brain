@@ -1,229 +1,232 @@
 # Knowledge Brain
 
-A personal AI knowledge base that grows with you. Powered by [Claude Code](https://claude.ai/claude-code).
+Un sistema personal de conocimiento con IA que crece contigo. Funciona con [Claude Code](https://claude.ai/claude-code).
 
-Drop in raw material — courses, articles, PDFs, ideas. Claude reads it, distills it into atomic wiki pages, links them together, and keeps everything indexed. Every session makes the system smarter.
+Agregas material crudo — cursos, artículos, PDFs, ideas. Claude lo lee, lo destila en páginas wiki atómicas, las conecta entre sí, y mantiene todo indexado. Cada sesión hace el sistema más inteligente.
 
-## The Hemingway Bridge
+> [English version](README_EN.md)
 
-The #1 problem with AI-assisted knowledge work: **you lose context between sessions.** Every new chat starts from zero. You re-explain your project, re-establish your preferences, and waste the first 10 minutes getting oriented.
+## El Hemingway Bridge
 
-This framework solves it with the **Hemingway Bridge** — a session continuity system inspired by Hemingway's writing habit of stopping mid-sentence so he'd know exactly where to pick up the next day.
+El problema #1 del trabajo con IA: **pierdes contexto entre sesiones.** Cada chat nuevo empieza desde cero. Vuelves a explicar tu proyecto, tus preferencias, y pierdes los primeros 10 minutos orientándote.
+
+Este framework lo resuelve con el **Hemingway Bridge** — un sistema de continuidad inspirado en el hábito de Hemingway de dejar una frase a medias para saber exactamente dónde retomar al día siguiente.
 
 ```
-/bridge-out   ← End of session: captures where you stopped,
-                decisions made, and the exact next action
+/bridge-out   ← Fin de sesión: captura dónde paraste,
+                decisiones tomadas, y la siguiente acción exacta
 
-/bridge       ← Start of session: reads the bridge note,
-                orients you in under 60 seconds
+/bridge       ← Inicio de sesión: lee la nota del bridge,
+                te orienta en menos de 60 segundos
 ```
 
-**The result:** Every session picks up exactly where the last one ended. No re-explaining. No context loss. Your AI assistant has full continuity across sessions.
+**El resultado:** cada sesión continúa exactamente donde terminó la anterior. Sin volver a explicar. Sin perder contexto. Tu asistente de IA tiene continuidad total entre sesiones.
 
-## How It Works
+## Cómo funciona
 
-This is a **three-layer knowledge system** maintained by Claude Code:
+Es un **sistema de conocimiento en tres capas** mantenido por Claude Code:
 
-| Layer | Location | Purpose |
+| Capa | Ubicación | Propósito |
 |---|---|---|
-| Layer 1 — Sources | `/sources` | Immutable raw material (courses, articles, PDFs) |
-| Layer 2 — Wiki | `/wiki` | Synthesized atomic pages — the actual "brain" |
-| Layer 3 — Schema | `.claude/` + `CLAUDE.md` | Rules that govern how the system behaves |
+| Capa 1 — Fuentes | `/sources` | Material crudo inmutable (cursos, artículos, PDFs) |
+| Capa 2 — Wiki | `/wiki` | Páginas atómicas sintetizadas — el "cerebro" real |
+| Capa 3 — Schema | `.claude/` + `CLAUDE.md` | Reglas que gobiernan cómo se comporta el sistema |
 
-You add raw material. Claude reads it, distills it into wiki pages, connects them, and keeps the index current.
+Tú agregas material crudo. Claude lo lee, lo destila en páginas wiki, las conecta, y mantiene el índice actualizado.
 
 ```
                          +--------------+
                          |  inbox/      |
-                         |  INBOX.md    |  capture zone
-                         |  drop/       |  (text + files)
+                         |  INBOX.md    |  zona de captura
+                         |  drop/       |  (texto + archivos)
                          +------+-------+
                                 |
                                 v
-+-------------+     /ingest      +-------------+    pulled by    +-------------+
-|   SOURCES   | ----------------> |    WIKI      | <------------ |  PROJECTS   |
-|  (Layer 1)  |  read & distill  |  (Layer 2)   |   tools, refs  |  (Layer 3)  |
-|  immutable  |                  |  atomic pages |               |  execution  |
++-------------+     /ingest      +-------------+   consultado    +-------------+
+|   FUENTES   | ----------------> |    WIKI      | <------------ |  PROYECTOS  |
+|  (Capa 1)   |  leer y destilar |  (Capa 2)    | herramientas  |  (Capa 3)   |
+|  inmutable  |                  |  pág. atómicas|   y refs      |  ejecución  |
 |  + inbox/   |                  +-------------+                |  + inbox/   |
 +-------------+                        ^                        +-------------+
-  course inbox                    index.md                      project inbox
-  auto-tagged                   master catalog                  auto-tagged
+  inbox de curso                  index.md                      inbox de proyecto
+  auto-etiquetado               catálogo maestro                auto-etiquetado
 
                     +----------------------------------+
                     |         .claude/ (SCHEMA)         |
                     |  rules - commands - hooks - skills |
-                    |     governs all three layers       |
+                    |     gobierna las tres capas        |
                     +----------------------------------+
 ```
 
-## Quick Start (5 minutes)
+## Inicio rápido (5 minutos)
 
-### Prerequisites
+### Requisitos
 
-| Tool | Required | Purpose |
+| Herramienta | Requerido | Para qué |
 |---|---|---|
-| [Claude Code](https://claude.ai/claude-code) | Yes | Primary interface — reads, writes, and maintains the knowledge base |
-| [Git](https://git-scm.com/) | Yes | Version control and safety net |
-| Python 3 | Yes | Runs validation hooks (frontmatter, links) |
-| [Obsidian](https://obsidian.md/) | Optional | Visual interface for browsing wiki pages |
+| [Claude Code](https://claude.ai/claude-code) | Sí | Interfaz principal — lee, escribe y mantiene tu base de conocimiento |
+| [Plan Pro de Claude](https://claude.ai/pricing) | Sí | Claude Code requiere suscripción Pro ($20/mes) |
+| [Git](https://git-scm.com/) | Sí | Control de versiones y red de seguridad |
+| [Node.js](https://nodejs.org/) | Sí | Necesario para instalar Claude Code (`npm install -g @anthropic-ai/claude-code`) |
+| [Obsidian](https://obsidian.md/) | Opcional | Interfaz visual para navegar las páginas wiki |
 
-### Setup
+### Instalación
 
 ```bash
-# 1. Create your knowledge brain from this template
-#    (click "Use this template" on GitHub, or clone directly)
-git clone <your-repo-url> my-knowledge-brain
-cd my-knowledge-brain
+# 1. Crea tu Knowledge Brain desde este template
+#    (click "Use this template" en GitHub, o clona directamente)
+git clone <url-de-tu-repo> mi-cerebro
+cd mi-cerebro
 
-# 2. Install the pre-commit hook (validates links on every commit)
+# 2. Instala el hook de pre-commit (valida links en cada commit)
 echo '#!/bin/sh' > .git/hooks/pre-commit
 echo 'python3 "$(git rev-parse --show-toplevel)/.claude/hooks/validate-links.py"' >> .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 
-# 3. Customize CLAUDE.md
-#    Open CLAUDE.md and fill in the [Owner] and [Active Priorities] sections
+# 3. Personaliza CLAUDE.md
+#    Abre CLAUDE.md y llena las secciones [Owner] y [Active Priorities]
 
-# 4. Open Claude Code
+# 4. Abre Claude Code
 claude
 
-# 5. Start your first session
+# 5. Empieza tu primera sesión
 /bridge
 ```
 
-That's it. Claude reads `CLAUDE.md` and `.claude/rules/` automatically.
+Eso es todo. Claude lee `CLAUDE.md` y `.claude/rules/` automáticamente.
 
-## The Four Habits
+## Los cuatro hábitos
 
-Build these four habits and the system compounds on its own:
+Construye estos cuatro hábitos y el sistema crece solo:
 
-| Habit | When | Command | What happens |
+| Hábito | Cuándo | Comando | Qué pasa |
 |---|---|---|---|
-| **Capture** | Anytime you find something interesting | Drop it in `inbox/` | Zero friction — just dump it |
-| **Ingest** | When inbox has items | `/ingest` | Claude reads, distills, creates wiki pages, indexes |
-| **Bridge** | Start and end of every session | `/bridge` + `/bridge-out` | Full context continuity across sessions |
-| **Lint** | Monthly | `/lint` | Health check — finds orphans, debt, gaps |
+| **Capturar** | Cuando encuentres algo útil | Agregarlo en `inbox/` | Sin fricción — solo tíralo ahí |
+| **Ingerir** | Cuando el inbox tenga items | `/ingest` | Claude lee, destila, crea páginas wiki, indexa |
+| **Bridge** | Inicio y fin de cada sesión | `/bridge` + `/bridge-out` | Continuidad total de contexto entre sesiones |
+| **Lint** | Una vez al mes | `/lint` | Revisión de salud — encuentra huérfanos, deuda, gaps |
 
-## Commands
+## Comandos
 
-| Command | What it does |
+| Comando | Qué hace |
 |---|---|
-| `/bridge` | **Start of session.** Reads log, memory, and index. Orients you in 60 seconds. |
-| `/bridge-out` | **End of session.** Creates a Hemingway Bridge — captures where you stopped and the exact next action. |
-| `/ingest` | **Process all inboxes.** Scans global, course, and project inboxes. Creates wiki pages. Updates index. |
-| `/lint` | **Monthly health check.** Finds orphan pages, distillation debt, stale content, broken links. |
-| `/safe-change` | **Branch workflow.** Creates a feature branch, makes changes, shows summary, merges on approval. |
+| `/bridge` | **Inicio de sesión.** Lee el log, la memoria y el índice. Te orienta en 60 segundos. |
+| `/bridge-out` | **Fin de sesión.** Crea un Hemingway Bridge — captura dónde paraste y la siguiente acción exacta. |
+| `/ingest` | **Procesa todos los inboxes.** Escanea inboxes global, de cursos y de proyectos. Crea páginas wiki. Actualiza el índice. |
+| `/lint` | **Revisión de salud mensual.** Encuentra páginas huérfanas, deuda de destilación, contenido desactualizado, links rotos. |
+| `/safe-change` | **Workflow de branch.** Crea una rama, hace cambios, muestra resumen, mergea con tu aprobación. |
 
-## Folder Structure
+## Estructura de carpetas
 
 ```
-my-knowledge-brain/
-+-- inbox/           Capture zone
-|   +-- INBOX.md     Text entries (URLs, ideas, quick notes)
-|   +-- drop/        Drop files here (PDFs, articles, transcripts)
-|   +-- processed/   Files move here after ingest
-+-- sources/         Raw immutable material
-|   +-- courses/     Course folders (standard structure below)
-|       +-- notes/       Lesson notes, module summaries
-|       +-- assignments/ Homework and exercises
-|       +-- resources/   Reference material, cheat sheets
-|       +-- inbox/       Course-specific inbox for ingest
-+-- wiki/            Synthesized knowledge — the brain
-|   +-- areas/       Ongoing areas of focus
-|   +-- concepts/    Atomic concept pages
-|   +-- tools/       Tools catalog and tutorials
-|   +-- playbooks/   Step-by-step workflows
-|   +-- references/  Reference docs and guides
-+-- projects/        Active project execution (standard structure below)
-|   +-- references/  Briefs, brand context, research
-|   +-- prompts/     Project-specific prompts
-|   +-- content/     Scripts, drafts, campaign plans
-|   +-- assets/      Generated images, videos, media
-|   +-- inbox/       Project-specific inbox for ingest
-+-- output/          Query results, lint reports, session notes
-|   +-- sessions/    Hemingway Bridge session notes
-+-- archive/         Superseded documents
-+-- .claude/         System schema (Layer 3)
+mi-cerebro/
++-- inbox/           Zona de captura
+|   +-- INBOX.md     Entradas de texto (URLs, ideas, notas rápidas)
+|   +-- drop/        Agrega archivos aquí (PDFs, artículos, transcripciones)
+|   +-- processed/   Los archivos se mueven aquí después del ingest
++-- sources/         Material crudo inmutable
+|   +-- courses/     Carpetas de cursos (estructura estándar)
+|       +-- notes/       Notas de lecciones, resúmenes de módulos
+|       +-- assignments/ Tareas y ejercicios
+|       +-- resources/   Material de referencia, cheat sheets
+|       +-- inbox/       Inbox específico del curso para ingest
++-- wiki/            Conocimiento sintetizado — el cerebro
+|   +-- areas/       Áreas de enfoque continuas
+|   +-- concepts/    Páginas de conceptos atómicos
+|   +-- tools/       Catálogo de herramientas y tutoriales
+|   +-- playbooks/   Workflows paso a paso
+|   +-- references/  Documentos de referencia y guías
++-- projects/        Ejecución de proyectos activos (estructura estándar)
+|   +-- references/  Briefs, contexto de marca, investigación
+|   +-- prompts/     Prompts específicos del proyecto
+|   +-- content/     Guiones, borradores, planes de campaña
+|   +-- assets/      Imágenes, videos, media generada
+|   +-- inbox/       Inbox específico del proyecto para ingest
++-- output/          Resultados de queries, reportes de lint, notas de sesión
+|   +-- sessions/    Notas de sesión del Hemingway Bridge
++-- archive/         Documentos reemplazados
++-- .claude/         Schema del sistema (Capa 3)
 |   +-- commands/    Slash commands (/bridge, /ingest, /lint, etc.)
-|   +-- rules/       Operational rules (frontmatter, links, language)
-|   +-- workflows/   Full workflow definitions (loaded on demand)
-|   +-- hooks/       Validation scripts (frontmatter, links, index)
-|   +-- templates/   Page templates for new files
-+-- index.md         Master catalog — Claude reads this to find anything
-+-- log.md           Chronological operation log (append-only)
-+-- CLAUDE.md        Root schema — governs all Claude behavior
+|   +-- rules/       Reglas operacionales (frontmatter, links, idioma)
+|   +-- workflows/   Definiciones de workflows completos (cargados bajo demanda)
+|   +-- hooks/       Scripts de validación (frontmatter, links, índice)
+|   +-- templates/   Templates para nuevos archivos
++-- index.md         Catálogo maestro — Claude busca aquí para encontrar todo
++-- log.md           Log cronológico de operaciones (solo se agrega, nunca se edita)
++-- CLAUDE.md        Schema raíz — gobierna todo el comportamiento de Claude
 ```
 
-## Distillation Levels
+## Niveles de destilación
 
-Every wiki page tracks how processed its knowledge is:
+Cada página wiki lleva un seguimiento de qué tan procesado está su conocimiento:
 
-| Level | State | What it means |
+| Nivel | Estado | Qué significa |
 |---|---|---|
-| 0 | Raw dump | Just captured, not processed |
-| 1 | First pass | Read, key points identified |
-| 2 | Distilled | Essential content rewritten in own words |
-| 3 | Synthesized | Connected to other pages, implications drawn |
-| 4 | Expression-ready | Can generate content directly from this page |
+| 0 | Dump crudo | Recién capturado, sin procesar |
+| 1 | Primera pasada | Leído, puntos clave identificados |
+| 2 | Destilado | Contenido reescrito en tus propias palabras |
+| 3 | Sintetizado | Conectado con otras páginas, implicaciones claras |
+| 4 | Listo para crear | Puedes generar contenido directamente desde esta página |
 
-Pages start at level 1 (after ingest) and move up through review. A page at level 4 is an asset — you can generate a blog post, video script, or presentation directly from it.
+Las páginas empiezan en nivel 1 (después del ingest) y suben con cada revisión. Una página nivel 4 es un activo — puedes generar un post, guión de video, o presentación directamente de ella.
 
-## Adding Content
+## Agregar contenido
 
-### Add new knowledge
-Drop material in the right inbox — context is automatic:
+### Agregar conocimiento nuevo
+Agrega el material en el inbox correcto — el contexto es automático:
 
-| What you have | Where to put it |
+| Qué tienes | Dónde ponerlo |
 |---|---|
-| A quick idea or URL | `inbox/INBOX.md` |
-| A PDF, article, or transcript | `inbox/drop/` |
-| Material from a specific course | `sources/courses/[course]/inbox/` |
-| Material for a specific project | `projects/[project]/inbox/` |
+| Una idea rápida o URL | `inbox/INBOX.md` |
+| Un PDF, artículo o transcripción | `inbox/drop/` |
+| Material de un curso específico | `sources/courses/[curso]/inbox/` |
+| Material de un proyecto específico | `projects/[proyecto]/inbox/` |
 
-Then run `/ingest`.
+Luego ejecuta `/ingest`.
 
-### Add a new course
-1. Create `sources/courses/[course-name]/`
-2. Add a `CLAUDE.md` describing the course
-3. Create `inbox/` and `inbox/processed/` subfolders
-4. Drop course files and run `/ingest`
+### Agregar un curso nuevo
+1. Crea `sources/courses/[nombre-del-curso]/`
+2. Agrega un `CLAUDE.md` describiendo el curso
+3. Crea subcarpetas `inbox/` e `inbox/processed/`
+4. Agrega los archivos del curso y ejecuta `/ingest`
 
-### Add a new project
-1. Create `projects/[project-name]/`
-2. Add a `CLAUDE.md` describing the project
-3. Create `references/`, `prompts/`, `inbox/`, and `inbox/processed/` subfolders
-4. Start working — Claude will build the project brief as you go
+### Agregar un proyecto nuevo
+1. Crea `projects/[nombre-del-proyecto]/`
+2. Agrega un `CLAUDE.md` describiendo el proyecto
+3. Crea subcarpetas `references/`, `prompts/`, `inbox/` e `inbox/processed/`
+4. Empieza a trabajar — Claude construye el brief del proyecto mientras avanzas
 
-## What NOT to Do
+## Qué NO hacer
 
-| Mistake | Why it breaks things |
+| Error | Por qué rompe cosas |
 |---|---|
-| Edit files in `/sources` | Layer 1 is immutable. Synthesize into `/wiki` instead. |
-| Put query results in `/projects` | `/projects` is for execution. Query results go to `/output`. |
-| Use wikilinks `[[like this]]` | They only work in Obsidian. Use `[text](relative/path.md)` instead. |
-| Create a `.md` file without indexing | The auto-index rule ensures Claude can find everything via `index.md`. |
-| Skip frontmatter | Every `.md` file (except CLAUDE.md/README.md) needs YAML frontmatter. |
-| Delete files without committing first | Git is the safety net. Commit, then delete freely. |
+| Editar archivos en `/sources` | La Capa 1 es inmutable. Sintetiza en `/wiki` en su lugar. |
+| Poner resultados de queries en `/projects` | `/projects` es para ejecución. Resultados de queries van a `/output`. |
+| Usar wikilinks `[[así]]` | Solo funcionan en Obsidian. Usa `[texto](ruta/relativa.md)` en su lugar. |
+| Crear un `.md` sin indexar | La regla de auto-indexado asegura que Claude encuentre todo via `index.md`. |
+| Saltarse el frontmatter | Todo archivo `.md` (excepto CLAUDE.md/README.md) necesita frontmatter YAML. |
+| Borrar archivos sin hacer commit primero | Git es tu red de seguridad. Commit, luego borra con confianza. |
 
-## Feature Comparison
+## Comparación de funcionalidades
 
-| Feature | Knowledge Brain | Notion | Obsidian alone | RAG / Vector DB |
+| Funcionalidad | Knowledge Brain | Notion | Obsidian solo | RAG / Vector DB |
 |---|---|---|---|---|
-| Session continuity (Hemingway Bridge) | Yes | No | No | No |
-| AI maintains the wiki for you | Yes | No | Partial (plugins) | No |
-| Works offline | Yes | No | Yes | Depends |
-| Portable (plain markdown + git) | Yes | No | Yes | No |
-| Auto-distillation tracking | Yes | No | Manual | No |
-| Distributed inbox system | Yes | No | No | No |
-| Pre-commit link validation | Yes | No | No | No |
-| Zero vendor lock-in | Yes | No | Mostly | No |
+| Continuidad de sesión (Hemingway Bridge) | Sí | No | No | No |
+| La IA mantiene la wiki por ti | Sí | No | Parcial (plugins) | No |
+| Funciona offline | Sí | No | Sí | Depende |
+| Portable (markdown + git) | Sí | No | Sí | No |
+| Seguimiento de destilación automático | Sí | No | Manual | No |
+| Sistema de inbox distribuido | Sí | No | No | No |
+| Validación de links pre-commit | Sí | No | No | No |
+| Cero vendor lock-in | Sí | No | Casi | No |
 
-## Built With
+## Construido con
 
-- [Claude Code](https://claude.ai/claude-code) — AI interface that reads, writes, and maintains the knowledge base
-- [Git](https://git-scm.com/) — version control and safety net
-- Markdown — universal, portable, human-readable
-- Python — lightweight validation hooks
+- [Claude Code](https://claude.ai/claude-code) — Interfaz de IA que lee, escribe y mantiene la base de conocimiento
+- [Git](https://git-scm.com/) — Control de versiones y red de seguridad
+- Markdown — Universal, portable, legible por humanos
+- Python — Hooks de validación ligeros
 
-## License
+## Licencia
 
 MIT
