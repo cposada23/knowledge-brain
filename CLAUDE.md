@@ -27,7 +27,7 @@ Layer 3 — The Schema: this file + .claude/rules/ + .claude/workflows/
 - /wiki → shared synthesized knowledge brain (Layer 2)
 - /projects → active project execution folders
 - /inbox → quick capture zone, zero friction
-- /output → query results, lint reports, content drafts (never in /projects)
+- /output → ephemeral files only: lint reports, session notes, plans, drafts (never lasting knowledge — that goes to /wiki)
 - index.md → master catalog of entire wiki
 - log.md → chronological operation log
 
